@@ -1,0 +1,8 @@
+CREATE TABLE orders (
+    id SERIAL PRIMARY KEY,
+    userId INTEGER NOT NULL,
+    status VARCHAR(50) NOT NULL,
+    createdAt TIMESTAMP NOT NULL DEFAULT NOW(),
+    FOREIGN KEY (userId) REFERENCES users(id) ON DELETE
+    SET NULL
+);
