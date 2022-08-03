@@ -4,25 +4,31 @@ The company stakeholders want to create an online storefront to showcase their g
 These are the notes from a meeting with the frontend developer that describe what endpoints the API needs to supply, as well as data shapes the frontend and backend have agreed meet the requirements of the application. 
 
 ## API Endpoints
-#### Products
-- Index `'products/' [GET]`
-- Show `'products/:id' [GET]`
-- Create `'products/' [POST] (token required)`
-- [OPTIONAL] Top 5 most popular products 
-- [OPTIONAL] Products by category (args: product category) `'products/?categoryId=:id' [GET]` 
 
 #### Users
 - Index `'users/' [GET] (token required)`
 - Show `'users/:id' [GET] (token required)`
-- Create `'users/' [POST] (token required)`
-- Delete `'users/' [DELETE] (token required)`
-- Login `'users/login' [POST]`
+- Create `'users/' [POST]`
+- [ADDED] Update `'users/:id' [PUT] (token required)`
+- [ADDED] Login `'users/login' [POST]`
+
+#### Products
+- Index `'products/' [GET]`
+- Show `'products/:id' [GET]`
+- Create `'products/' [POST] (token required)`
+- [ADDED] Update `'products/:id' [PUT] (token required)`
+- [ADDED] Delete `'products/:id' [DELETE] (token required)`
+- [OPTIONAL] Products by category (args: product category) `'products/?categoryId=:id' [GET]` 
 
 #### Orders
-- Index (All user orders) `'orders/:id' [GET] (token required)` // userID is extracted from token
-- Current Order by user `'orders/current' [GET] (token required)` // userID is extracted from token
-- [OPTIONAL] Completed Orders by user `'orders/completed' [GET] (token required)` // userID is extracted from token
-- [ADDED] Update order's status: `'orders/:id' [PUT] (token required)` put body should have status
+- [ADDED] Index (user orders) `'orders/' [GET] (token required)`
+- Create `'orders/' [POST] (token required)`
+- Current Order by user `'orders/recent' [GET] (token required)` // userID is extracted from token
+- [ADDED] Index (All user orders) `'orders/:id' [GET] (token required)` // userID is extracted from token
+- [OPTIONAL] Completed Orders by user `'/orders?status=complete' [GET] (token required)` // userID is extracted from token
+- [ADDED] Update order's status, add products: `'orders/:id' [PUT] (token required)`
+
+* Note: For detailed information on the endpoints, see the rest-client.http file. It uses vscode extension [rest-client](https://marketplace.visualstudio.com/items?itemName=humao.rest-client) to run the requests.
 
 ## Data Shapes
 

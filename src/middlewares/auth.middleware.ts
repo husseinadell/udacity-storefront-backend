@@ -8,8 +8,7 @@ export const verifyAuthToken = async (req: Request, res: Response, next: NextFun
   try {
     const authHeader = req.headers.authorization as string
     const token = authHeader.split(' ')[1]
-    const decoded = await jwt.verify(token, JWT_SECRET)
-    res.locals.user = decoded
+    res.locals.user = await jwt.verify(token, JWT_SECRET)
     next()
   } catch (error) {
     res.status(401).send({ error: 'Invalid token' })

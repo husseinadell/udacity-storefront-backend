@@ -47,18 +47,6 @@ export class ProductRepository {
     }
   }
 
-  async showByCategory(category: string): Promise<Product> {
-    try {
-      const conn = await client.connect()
-      const sql = 'select * from products where category = $1'
-      const result = await conn.query(sql, [category])
-      conn.release()
-      return result.rows[0]
-    } catch (error) {
-      throw new Error(`Couldn't get product because of ${error}`)
-    }
-  }
-
   async create(product: Product): Promise<Product> {
     try {
       const conn = await client.connect()

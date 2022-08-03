@@ -21,15 +21,6 @@ export const show = async (req: Request, res: Response) => {
     res.status(500).send(error)
   }
 }
-export const showByCategory = async (req: Request, res: Response) => {
-  try {
-    const category = req.params.category as unknown as string
-    const product = await productRepository.showByCategory(category)
-    res.json(product)
-  } catch (error) {
-    res.status(500).send(error)
-  }
-}
 export const create = async (req: Request, res: Response) => {
   try {
     const product: Product = {

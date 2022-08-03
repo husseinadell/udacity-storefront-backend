@@ -24,6 +24,15 @@ app.get('/', (req: Request, res: Response) => {
 userRouter(app)
 productRouter(app)
 orderRouter(app)
+app.use('*', (_req, res) => {
+  res.status(404).json({
+    success: false,
+    message: 'Page not found',
+    error: {
+      message: 'You reached a route that is not defined on this server'
+    }
+  })
+})
 
 // start express server
 app.listen(PORT, () => {

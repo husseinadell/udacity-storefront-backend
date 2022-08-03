@@ -1,5 +1,5 @@
 @baseUrl = http://localhost:3000
-@token = eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6MTIsImlhdCI6MTY1OTQ4NjM3OH0.9AH_XR8F3oko1S4q6kwmrzYWtRscgZWif7Ph2v4XumY
+@token = eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6MSwiZmlyc3RuYW1lIjoiSHVzc2VpbiIsImxhc3RuYW1lIjoiQWRlbCIsImVtYWlsIjoiaHVzc2Vpbi5hZGVsQHRlc3QuY29tIiwiY3JlYXRlZGF0IjoiMjAyMi0wOC0wM1QxNjozNDo0OC42MDJaIiwiaWF0IjoxNjU5NTUyOTE2fQ.e7Dh0r_qHOyU3HKf4UVOSNpuF6k81afyH2DulEIyR5E
 
 ############################# useres service #############################
 ### create user
@@ -7,10 +7,10 @@ POST {{baseUrl}}/users
 Content-Type: application/json
 
 {
-    "firstName": "test",
-    "lastName": "test",
-    "password": "test2",
-    "email": "test@gmail.com"
+    "firstName": "Mo",
+    "lastName": "Salah",
+    "password": "password",
+    "email": "mo.salah@test.com"
 }
 
 ### login user
@@ -18,8 +18,8 @@ POST {{baseUrl}}/users/login
 Content-Type: application/json
 
 {
-    "password": "test2",
-    "email": "test@gmail.com"
+    "password": "password",
+    "email": "hussein.adel@test.com"
 }
 
 ### list all user
@@ -28,20 +28,21 @@ Content-Type: application/json
 Authorization: Bearer {{token}}
 
 ### show user info
-GET {{baseUrl}}/users/12
+GET {{baseUrl}}/users/1
 Content-Type: application/json
 Authorization: Bearer {{token}}
 
 
 ### update user
-PUT {{baseUrl}}/users/12
+PUT {{baseUrl}}/users/1
 Content-Type: application/json
 Authorization: Bearer {{token}}
 
 {
-    "firstName": "test111",
-    "lastName": "test"
+    "firstName": "Hussein",
+    "lastName": "Adel"
 }
+
 
 ############################# products service #############################
   
@@ -51,25 +52,22 @@ Content-Type: application/json
 Authorization: Bearer {{token}}
 
 {
-    "name": "Fifa23",
-    "price": "100",
-    "category": "Sport"
+    "name": "Coffee Machine",
+    "price": "2000",
+    "category": "Electronics"
 }
 
 ### list all products
 GET {{baseUrl}}/products
 Content-Type: application/json
-Authorization: Bearer {{token}}
-
-### show product info
-GET {{baseUrl}}/products/1
-Content-Type: application/json
-Authorization: Bearer {{token}}
 
 ### list all products by category
 GET {{baseUrl}}/products?category=Sport
 Content-Type: application/json
-Authorization: Bearer {{token}}
+
+### show product info
+GET {{baseUrl}}/products/1
+Content-Type: application/json
 
 ### update product
 PUT {{baseUrl}}/products/1
@@ -77,8 +75,8 @@ Content-Type: application/json
 Authorization: Bearer {{token}}
 
 {
-    "name": "Fifa23",
-    "price": "100",
+    "name": "Fifa22",
+    "price": "170",
     "category": "Sport"
 }
 
@@ -87,7 +85,6 @@ DELETE {{baseUrl}}/products/1
 Content-Type: application/json
 Authorization: Bearer {{token}}
   
-
 
 ############################# orders service #############################
 
@@ -116,7 +113,17 @@ Authorization: Bearer {{token}}
 }
 
 ### show user orders
+GET {{baseUrl}}/orders
+Content-Type: application/json
+Authorization: Bearer {{token}}
+
+### show user active orders
 GET {{baseUrl}}/orders?status=active
+Content-Type: application/json
+Authorization: Bearer {{token}}
+
+### show user complete orders
+GET {{baseUrl}}/orders?status=complete
 Content-Type: application/json
 Authorization: Bearer {{token}}
 
@@ -125,12 +132,26 @@ GET {{baseUrl}}/orders/recent
 Content-Type: application/json
 Authorization: Bearer {{token}}
 
-
-### update order (with products)
-PUT {{baseUrl}}/orders/14
+### update order change status
+PUT {{baseUrl}}/orders/1
 Content-Type: application/json
 Authorization: Bearer {{token}}
 
 {
     "status": "complete"
+}
+
+### update order (with products)
+PUT {{baseUrl}}/orders/1
+Content-Type: application/json
+Authorization: Bearer {{token}}
+
+{
+    "status": "active",
+    "products": [
+        {
+            "productId": 2,
+            "quantity": 2
+        }
+    ]
 }

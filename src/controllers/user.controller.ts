@@ -2,6 +2,7 @@ import jwt, { Secret } from 'jsonwebtoken'
 import { Request, Response } from 'express'
 import { UserUpdate, UserRepository, UserResponse, User } from '../models/user.model'
 import dotenv from 'dotenv'
+import { validateEmail } from '../utils'
 
 dotenv.config()
 const JWT_SECRET = process.env.JWT_SECRET as Secret
@@ -12,6 +13,9 @@ export const create = async (req: Request, res: Response) => {
     const { firstName, lastName, password, email } = req.body as unknown as User
     if (!firstName || !lastName || !password || !email) {
       res.status(400).json({ error: 'Missing required fields' })
+    }
+    if (!validateEmail(email)) {
+      res.status(400).json({ error: 'Invalid Email' })
     }
     const user: User = {
       firstName,
@@ -82,7 +86,7 @@ export const login = async (req: Request, res: Response) => {
     if (!user) {
       return res.status(400).json({ error: 'Invalid email or password' })
     }
-    const token = jwt.sign({ id: user.id }, JWT_SECRET)
+    const token = jwt.sign({ ...user }, JWT_SECRET)
     return res.json({ user, token })
   } catch (error) {
     console.log(error)
