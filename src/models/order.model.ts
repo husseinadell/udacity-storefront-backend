@@ -1,5 +1,5 @@
 import client from '../database'
-import { OrderProduct, OrderProductRepository, OrderProductWithInfo } from './orderProducts.model'
+import { OrderProduct, OrderProductRepository, OrderProductWithInfo } from './orderProduct.model'
 
 export enum OrderStatus {
   ACTIVE = 'active',
@@ -28,7 +28,7 @@ export class OrderRepository {
     try {
       const conn = await client.connect()
       const sql = `
-        insert into orders (userId, status) 
+        insert into orders ("userId", status) 
         values ($1, $2) 
         returning *`
       const result = await conn.query(sql, [order.userId, order.status])
@@ -81,7 +81,7 @@ export class OrderRepository {
   async showUserOrders(userId: number): Promise<OrderWithProducts[]> {
     try {
       const conn = await client.connect()
-      const sql = 'select * from orders where userId = $1'
+      const sql = 'select * from orders where "userId" = $1'
       const result = await conn.query(sql, [userId])
       conn.release()
       const orders: OrderWithProducts[] = []
@@ -98,9 +98,8 @@ export class OrderRepository {
   async filterUserOrders(userId: number, status: OrderStatus): Promise<OrderWithProducts[]> {
     try {
       const conn = await client.connect()
-      const sql = 'select * from orders where userId = $1 and status = $2'
+      const sql = 'select * from orders where "userId" = $1 and status = $2'
       const result = await conn.query(sql, [userId, status])
-      console.log(result.rows)
 
       conn.release()
       const orders: OrderWithProducts[] = []
@@ -108,7 +107,6 @@ export class OrderRepository {
         const products = await orderProductRepository.showOrderProducts(order.id)
         orders.push({ ...order, products })
       }
-      console.log(result.rows, orders)
       return orders
     } catch (error) {
       throw new Error(`Couldn't get products because of ${error}`)
@@ -118,13 +116,25 @@ export class OrderRepository {
   async showUserCurrentOrder(userId: number): Promise<OrderWithProducts> {
     try {
       const conn = await client.connect()
-      const sql = 'select * from orders where userId = $1 and status = $2 order by id desc limit 1'
+      const sql =
+        'select * from orders where "userId" = $1 and status = $2 order by id desc limit 1'
       const result = await conn.query(sql, [userId, OrderStatus.ACTIVE])
       conn.release()
       const products = await orderProductRepository.showOrderProducts(result.rows[0].id)
       return { ...result.rows[0], products }
     } catch (error) {
       throw new Error(`Couldn't get products because of ${error}`)
+    }
+  }
+
+  async delete(id: number): Promise<void> {
+    try {
+      const conn = await client.connect()
+      const sql = 'delete from orders where id = $1'
+      await conn.query(sql, [id])
+      conn.release()
+    } catch (error) {
+      throw new Error(`Couldn't delete order because of ${error}`)
     }
   }
 }

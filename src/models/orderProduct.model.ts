@@ -20,7 +20,7 @@ export class OrderProductRepository {
     try {
       const conn = await client.connect()
       const sql = `
-        insert into order_products (orderId, productId, quantity) 
+        insert into order_products ("orderId", "productId", quantity) 
         values ($1, $2, $3) 
         returning *`
       const result = await conn.query(sql, [
@@ -40,7 +40,7 @@ export class OrderProductRepository {
   //     const conn = await client.connect()
   //     const orderProductsRows = orderProducts.map((op) => [op.orderId, op.productId, op.quantity])
   //     console.log(orderProductsRows)
-  //     const sql = 'insert into order_products (orderId, productId, quantity) values %L returning *'
+  //     const sql = 'insert into order_products ("orderId", "productId", quantity) values %L returning *'
   //     const result = await conn.query(sql, orderProductsRows)
   //     conn.release()
   //     return result.rows
@@ -54,9 +54,9 @@ export class OrderProductRepository {
     try {
       const conn = await client.connect()
       const sql = `
-        select orderId, productId, quantity 
+        select "orderId", "productId", quantity 
         from order_products
-        where orderId = $1`
+        where "orderId" = $1`
       const result = await conn.query(sql, [orderId])
       conn.release()
       return result.rows
@@ -69,10 +69,10 @@ export class OrderProductRepository {
     try {
       const conn = await client.connect()
       const sql = `
-        select op.orderId, op.productId, op.quantity, p.name, p.price, p.category 
+        select op."orderId", op."productId", op.quantity, p.name, p.price, p.category 
         from order_products op
-        join products p on op.productId = p.id 
-        where op.orderId = $1`
+        join products p on op."productId" = p.id 
+        where op."orderId" = $1`
       const result = await conn.query(sql, [orderId])
       conn.release()
       return result.rows

@@ -33,7 +33,7 @@ export class UserRepository {
   async index(): Promise<UserResponse[]> {
     try {
       const conn = await client.connect()
-      const sql = 'select id, firstName, lastName, email, createdAt from users'
+      const sql = 'select id, "firstName", "lastName", email, "createdAt" from users'
       const result = await conn.query(sql)
       conn.release()
       return result.rows
@@ -45,7 +45,7 @@ export class UserRepository {
   async show(id: number): Promise<UserResponse> {
     try {
       const conn = await client.connect()
-      const sql = 'select id, firstName, lastName, email, createdAt from users where id = $1'
+      const sql = 'select id, "firstName", "lastName", email, "createdAt" from users where id = $1'
       const result = await conn.query(sql, [id])
       conn.release()
       return result.rows[0]
@@ -77,18 +77,15 @@ export class UserRepository {
 
   async create(user: User): Promise<UserResponse> {
     try {
-      console.log(user)
       const conn = await client.connect()
-      console.log(user)
       const hashedPassword = await bcrypt.hash(
         user.password + BCRYPT_PASSWORD,
         parseInt(BCRYPT_SALT_ROUNDS as string)
       )
-      console.log(hashedPassword)
       const sql = `
-        insert into users (firstName, lastName, email, password) 
+        insert into users ("firstName", "lastName", email, password) 
         values ($1, $2, $3, $4) 
-        returning id, firstName, lastName, email, createdAt`
+        returning id, "firstName", "lastName", email, "createdAt"`
       const result = await conn.query(sql, [
         user.firstName,
         user.lastName,
@@ -109,14 +106,28 @@ export class UserRepository {
     try {
       const conn = await client.connect()
       const sql = `
-        update users set firstName = $1, lastName = $2 
+        update users set "firstName" = $1, "lastName" = $2 
         where id = $3
-        returning id, firstName, lastName, email, createdAt`
+        returning id, "firstName", "lastName", email, "createdAt"`
       const result = await conn.query(sql, [user.firstName, user.lastName, user.id])
       conn.release()
       return result.rows[0]
     } catch (error) {
       throw new Error(`Couldn't update user because of ${error}`)
+    }
+  }
+
+  async delete(id: number): Promise<UserResponse> {
+    try {
+      const conn = await client.connect()
+      const sql = `
+        delete from users where id = $1
+        returning id, "firstName", "lastName", email, "createdAt"`
+      const result = await conn.query(sql, [id])
+      conn.release()
+      return result.rows[0]
+    } catch (error) {
+      throw new Error(`Couldn't delete user because of ${error}`)
     }
   }
 }

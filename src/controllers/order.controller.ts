@@ -1,6 +1,6 @@
 import { Request, Response } from 'express'
 import { Order, OrderRepository, OrderStatus, OrderWithProducts } from '../models/order.model'
-import { OrderProductRepository } from '../models/orderProducts.model'
+import { OrderProductRepository } from '../models/orderProduct.model'
 
 const orderRepository = new OrderRepository()
 const orderProductRepository = new OrderProductRepository()
