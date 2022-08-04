@@ -1,5 +1,5 @@
 @baseUrl = http://localhost:3000
-@token = eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6NCwiaWF0IjoxNjU5NjMxNjI3fQ.inxH2rBDacvnuo1Sc3Gnz9xmBJw3yxVVPXUd_6DJPvM
+@token = eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6MSwiZmlyc3ROYW1lIjoiTW8iLCJsYXN0TmFtZSI6IlNhbGFoIiwiZW1haWwiOiJtby5zYWxhaEB0ZXN0LmNvbSIsImNyZWF0ZWRBdCI6IjIwMjItMDgtMDRUMTg6MDc6MTcuNTM3WiIsImlhdCI6MTY1OTY0MzY3MX0.w1tC8Uuys3zQtE-DtYJhuTOTRwfc5plTIEZsqdz9SK4
 
 ############################# useres service #############################
 ### create user
@@ -19,7 +19,7 @@ Content-Type: application/json
 
 {
     "password": "password",
-    "email": "hussein.adel@test.com"
+    "email": "mo.salah@test.com"
 }
 
 ### list all user
@@ -62,7 +62,7 @@ GET {{baseUrl}}/products
 Content-Type: application/json
 
 ### list all products by category
-GET {{baseUrl}}/products?category=Sport
+GET {{baseUrl}}/products?category=Electronics
 Content-Type: application/json
 
 ### show product info

@@ -17,9 +17,9 @@ if (process.env.NODE_ENV !== 'test') {
 app.use(express.json())
 
 // add routing for / path
-app.get('/', (req: Request, res: Response) => {
+app.get('/', (_req: Request, res: Response) => {
   res.json({
-    message: 'Hello World 🌍'
+    message: 'Welcome to Udacity Full Stack Nanodegree Project #2 (Storefront API)'
   })
 })
 

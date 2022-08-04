@@ -63,7 +63,6 @@ export class UserRepository {
         return null
       }
       if (bcrypt.compareSync(password + BCRYPT_PASSWORD, result.rows[0].password)) {
-        // const { password, ...userResponse } = result.rows[0]
         delete result.rows[0].password
         return result.rows[0]
       } else {

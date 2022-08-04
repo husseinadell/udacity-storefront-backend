@@ -43,11 +43,6 @@ export class OrderRepository {
           })
           products.push(orderProduct)
         }
-        // const productsData = order.products.map((product) => ({
-        //   ...product,
-        //   orderId: createdOrder.id
-        // }))
-        // products = await orderProductRepository.createOrderProducts(productsData)
       }
       return { ...createdOrder, products }
     } catch (error) {

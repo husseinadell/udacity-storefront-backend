@@ -35,21 +35,6 @@ export class OrderProductRepository {
     }
   }
 
-  // async createOrderProducts(orderProducts: OrderProduct[]): Promise<OrderProduct[]> {
-  //   try {
-  //     const conn = await client.connect()
-  //     const orderProductsRows = orderProducts.map((op) => [op.orderId, op.productId, op.quantity])
-  //     console.log(orderProductsRows)
-  //     const sql = 'insert into order_products ("orderId", "productId", quantity) values %L returning *'
-  //     const result = await conn.query(sql, orderProductsRows)
-  //     conn.release()
-  //     return result.rows
-  //   } catch (error) {
-  //     console.log(error)
-  //     throw new Error(`Couldn't create order product because of ${error}`)
-  //   }
-  // }
-
   async showOrderProducts(orderId: number): Promise<OrderProduct[]> {
     try {
       const conn = await client.connect()
