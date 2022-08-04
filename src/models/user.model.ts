@@ -1,7 +1,6 @@
 import client from '../database'
 import bcrypt from 'bcrypt'
 import dotenv from 'dotenv'
-
 dotenv.config()
 const { BCRYPT_SALT_ROUNDS, BCRYPT_PASSWORD } = process.env
 
@@ -94,6 +93,7 @@ export class UserRepository {
       ])
       conn.release()
       return result.rows[0]
+      /* eslint-disable-next-line @typescript-eslint/no-explicit-any */
     } catch (error: any) {
       if (error.code === '23505' && error.constraint === 'users_email_key') {
         throw new Error(`duplicate key value violates unique constraint`)

@@ -29,7 +29,7 @@ export const create = async (req: Request, res: Response) => {
       category: req.body.category
     }
     const newProduct = await productRepository.create(product)
-    res.json(newProduct)
+    res.status(201).json({ product: newProduct })
   } catch (error) {
     res.status(500).send(error)
   }

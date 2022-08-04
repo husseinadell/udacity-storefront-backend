@@ -1,9 +1,7 @@
 import { Request, Response } from 'express'
 import { Order, OrderRepository, OrderStatus, OrderWithProducts } from '../models/order.model'
-import { OrderProductRepository } from '../models/orderProduct.model'
 
 const orderRepository = new OrderRepository()
-const orderProductRepository = new OrderProductRepository()
 
 export const create = async (req: Request, res: Response) => {
   try {
@@ -13,10 +11,8 @@ export const create = async (req: Request, res: Response) => {
       products: req.body.products
     }
     const newOrder = await orderRepository.create(order)
-    res.json(newOrder)
+    res.status(201).json(newOrder)
   } catch (error) {
-    console.log(error)
-
     res.status(500).send(error)
   }
 }
@@ -32,7 +28,6 @@ export const showUserOrders = async (req: Request, res: Response) => {
     }
     res.json(orders)
   } catch (error) {
-    console.log(error)
     res.status(500).send(error)
   }
 }
@@ -42,7 +37,6 @@ export const showUserCurrentOrder = async (req: Request, res: Response) => {
     const order = await orderRepository.showUserCurrentOrder(userId)
     res.json(order)
   } catch (error) {
-    console.log(error)
     res.status(500).send(error)
   }
 }
@@ -57,7 +51,6 @@ export const update = async (req: Request, res: Response) => {
     const updatedOrder = await orderRepository.update(order)
     res.json(updatedOrder)
   } catch (error) {
-    console.log(error)
     res.status(500).send(error)
   }
 }

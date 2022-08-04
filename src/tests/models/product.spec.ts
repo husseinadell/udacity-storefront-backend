@@ -25,18 +25,18 @@ describe('Test ProductRepository', (): void => {
   })
   it('should list all products', async (): Promise<void> => {
     const result: TestProduct[] = await testProductRepository.index(undefined)
-    expect(result.length).toBe(1)
-    expect(result[0].name).toBe('test product')
-    expect(result[0].price).toBe(10)
-    expect(result[0].category).toBe('test')
+    expect(result.length).toBeGreaterThan(0)
+    expect(result.at(-1)?.name).toBe('test product')
+    expect(result.at(-1)?.price).toBe(10)
+    expect(result.at(-1)?.category).toBe('test')
   })
   it('should list all products by category', async (): Promise<void> => {
     const category = 'test'
     const result: TestProduct[] = await testProductRepository.index(category)
     expect(result.length).toBe(1)
-    expect(result[0].name).toBe('test product')
-    expect(result[0].price).toBe(10)
-    expect(result[0].category).toBe('test')
+    expect(result.at(-1)?.name).toBe('test product')
+    expect(result.at(-1)?.price).toBe(10)
+    expect(result.at(-1)?.category).toBe('test')
   })
   it('should list all products by category (empty list for not found category)', async (): Promise<void> => {
     const category = 'test1'

@@ -22,81 +22,94 @@ export type TestOrderWithProducts = {
   createdAt?: Date
   products?: OrderProductWithInfo[]
 }
+let productId1: number
+let productId2: number
+let userId: number
+let orderId: number
+let orderIdWithProducts: number
 
 describe('Test OrderRepository', (): void => {
   beforeAll(async (): Promise<void> => {
-    await testProductRepository.create({
+    const { id: p1 } = await testProductRepository.create({
       name: 'test product',
       price: 10,
       category: 'test'
     })
-    await testProductRepository.create({
+    const { id: p2 } = await testProductRepository.create({
       name: 'test product 2',
       price: 20,
       category: 'test2'
     })
-    await testUserRepository.create({
+    const { id } = await testUserRepository.create({
       firstName: 'order',
       lastName: 'user',
       password: 'password',
       email: 'order.user@test.com'
     })
+    productId1 = p1 as number
+    productId2 = p2 as number
+    userId = id
   })
   it('should create an order', async (): Promise<void> => {
     const result: TestOrder = await testOrderRepository.create({
-      userId: 1,
+      userId,
       status: OrderStatus.ACTIVE
     })
-    expect(result.userId).toBe(1)
+    expect(result.userId).toBe(userId)
     expect(result.status).toBe(OrderStatus.ACTIVE)
     expect(result.products).toHaveSize(0)
+    orderId = result.id as number
   })
   it('should create an order with products', async (): Promise<void> => {
     const result: TestOrder = await testOrderRepository.create({
-      userId: 1,
+      userId,
       status: OrderStatus.ACTIVE,
       products: [
         {
-          productId: 1,
+          productId: productId1,
           quantity: 1
         },
         {
-          productId: 2,
+          productId: productId2,
           quantity: 2
         }
       ]
     })
-    expect(result.userId).toBe(1)
+    expect(result.userId).toBe(userId)
     expect(result.status).toBe(OrderStatus.ACTIVE)
     expect(result.products).toHaveSize(2)
+    orderIdWithProducts = result.id as number
   })
   it('should update an order status', async (): Promise<void> => {
     const result: TestOrder = await testOrderRepository.update({
-      id: 1,
-      userId: 1,
+      id: orderId,
+      userId,
       status: OrderStatus.COMPLETE
     })
-    expect(result.userId).toBe(1)
+    expect(result.userId).toBe(userId)
     expect(result.status).toBe(OrderStatus.COMPLETE)
     expect(result.products).toHaveSize(0)
   })
   it('should list all user orders', async (): Promise<void> => {
-    const result: TestOrderWithProducts[] = await testOrderRepository.showUserOrders(1)
+    const result: TestOrderWithProducts[] = await testOrderRepository.showUserOrders(userId)
     expect(result).toHaveSize(2)
   })
   it('should list all user active orders', async (): Promise<void> => {
-    const result: TestOrder[] = await testOrderRepository.filterUserOrders(1, OrderStatus.ACTIVE)
+    const result: TestOrder[] = await testOrderRepository.filterUserOrders(
+      userId,
+      OrderStatus.ACTIVE
+    )
     expect(result).toHaveSize(1)
   })
   it('should show user active order', async (): Promise<void> => {
-    const result: TestOrderWithProducts = await testOrderRepository.showUserCurrentOrder(1)
-    expect(result.userId).toBe(1)
+    const result: TestOrderWithProducts = await testOrderRepository.showUserCurrentOrder(userId)
+    expect(result.userId).toBe(userId)
     expect(result.status).toBe(OrderStatus.ACTIVE)
-    expect(result.id).toBe(2)
+    expect(result.id).toBe(orderIdWithProducts)
   })
   afterAll(async (): Promise<void> => {
-    await testProductRepository.remove(1)
-    await testProductRepository.remove(2)
-    await testUserRepository.delete(1)
+    await testProductRepository.remove(productId1)
+    await testProductRepository.remove(productId2)
+    await testUserRepository.delete(userId)
   })
 })

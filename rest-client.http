@@ -1,5 +1,5 @@
 @baseUrl = http://localhost:3000
-@token = eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6MSwiZmlyc3RuYW1lIjoiSHVzc2VpbiIsImxhc3RuYW1lIjoiQWRlbCIsImVtYWlsIjoiaHVzc2Vpbi5hZGVsQHRlc3QuY29tIiwiY3JlYXRlZGF0IjoiMjAyMi0wOC0wM1QxNjozNDo0OC42MDJaIiwiaWF0IjoxNjU5NTUyOTE2fQ.e7Dh0r_qHOyU3HKf4UVOSNpuF6k81afyH2DulEIyR5E
+@token = eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6NCwiaWF0IjoxNjU5NjMxNjI3fQ.inxH2rBDacvnuo1Sc3Gnz9xmBJw3yxVVPXUd_6DJPvM
 
 ############################# useres service #############################
 ### create user

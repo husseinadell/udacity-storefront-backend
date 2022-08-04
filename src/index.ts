@@ -11,7 +11,9 @@ const PORT = process.env.PORT || 3000
 // create an instance server
 const app: Application = express()
 // HTTP request logger middleware
-app.use(morgan('short'))
+if (process.env.NODE_ENV !== 'test') {
+  app.use(morgan('short'))
+}
 app.use(express.json())
 
 // add routing for / path
@@ -36,6 +38,7 @@ app.use('*', (_req, res) => {
 
 // start express server
 app.listen(PORT, () => {
+  /* eslint-disable no-console, no-control-regex*/
   console.log(`Server is starting at prot:${PORT}`)
 })
 

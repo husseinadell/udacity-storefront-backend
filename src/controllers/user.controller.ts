@@ -12,10 +12,10 @@ export const create = async (req: Request, res: Response) => {
   try {
     const { firstName, lastName, password, email } = req.body as unknown as User
     if (!firstName || !lastName || !password || !email) {
-      res.status(400).json({ error: 'Missing required fields' })
+      return res.status(400).json({ error: 'Missing required fields' })
     }
     if (!validateEmail(email)) {
-      res.status(400).json({ error: 'Invalid Email' })
+      return res.status(400).json({ error: 'Invalid Email' })
     }
     const user: User = {
       firstName,
@@ -25,8 +25,8 @@ export const create = async (req: Request, res: Response) => {
     }
     const newUser = await userRepository.create(user)
     const token = jwt.sign({ id: newUser.id }, JWT_SECRET)
-    res.json({ user: newUser, token })
-    // TBD: remove any and replace with proper type
+    res.status(201).json({ user: newUser, token })
+    /* eslint-disable-next-line @typescript-eslint/no-explicit-any */
   } catch (error: any) {
     if (error.message.includes('duplicate key value violates unique constraint')) {
       return res.status(400).json({ error: 'Email already in use' })
@@ -38,9 +38,9 @@ export const create = async (req: Request, res: Response) => {
 export const index = async (_: Request, res: Response) => {
   try {
     const users: UserResponse[] = await userRepository.index()
-    res.json(users)
+    return res.json(users)
   } catch (error) {
-    res.status(500).json({ error: error })
+    return res.status(500).json({ error: error })
   }
 }
 
@@ -48,16 +48,15 @@ export const show = async (req: Request, res: Response) => {
   try {
     const userId = req.params.id as unknown as number
     const users: UserResponse = await userRepository.show(userId)
-    res.json(users)
+    return res.json(users)
   } catch (error) {
-    res.status(500).json({ error: error })
+    return res.status(500).json({ error: error })
   }
 }
 
 export const update = async (req: Request, res: Response) => {
   try {
     const userId = req.params.id as unknown as number
-
     const userUpdate: UserUpdate = {
       id: userId,
       firstName: req.body.firstName,
@@ -69,11 +68,9 @@ export const update = async (req: Request, res: Response) => {
         .json({ error: 'Missing required fields, firstName and lastName are both needed' })
     }
     const user = await userRepository.update(userUpdate)
-    res.json(user)
+    return res.json(user)
   } catch (error) {
-    console.log(error)
-
-    res.status(500).json({ error: error })
+    return res.status(500).json({ error: error })
   }
 }
 
@@ -89,7 +86,6 @@ export const login = async (req: Request, res: Response) => {
     const token = jwt.sign({ ...user }, JWT_SECRET)
     return res.json({ user, token })
   } catch (error) {
-    console.log(error)
-    res.status(500).json({ error: error })
+    return res.status(500).json({ error: error })
   }
 }
